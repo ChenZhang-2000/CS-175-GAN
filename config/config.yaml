@@ -1,0 +1,16 @@
+GLOBAL:
+  TRAIN_DIR: "G:/Datasets/coco/train2014"
+  TRAIN_TXT: "G:/Datasets/coco/annotations/captions_train2014.json"
+  VALID_DIR: "G:/Datasets/coco/val2014"
+  VALID_TXT: "G:/Datasets/coco/annotations/captions_val2014.json"
+
+TRAIN:
+  GLR: 0.0001
+  DLR: 0.0000001
+  BS: 32
+  MAX_EPOCH: 300
+
+MODEL:
+  ENCODER: "BLSTM"
+  GENERATOR: "DFG"
+  DISCRIMINATOR: "DFG"
