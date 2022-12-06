@@ -1,8 +1,9 @@
 GLOBAL:
-  TRAIN_DIR: "G:/Datasets/coco/train2014"
-  TRAIN_TXT: "G:/Datasets/coco/annotations/captions_train2014.json"
-  VALID_DIR: "G:/Datasets/coco/val2014"
-  VALID_TXT: "G:/Datasets/coco/annotations/captions_val2014.json"
+  TRAIN_DIR: "E:/Datasets/COCO/train2014"
+  TRAIN_TXT: "E:/Datasets/COCO/annotations/captions_train2014.json"
+  VALID_DIR: "E:/Datasets/COCO/val2014"
+  VALID_TXT: "E:/Datasets/COCO/annotations/captions_val2014.json"
+  PREPROCESS: "E:/Datasets/COCO/preprocessed"
 
 TRAIN:
   GLR: 0.0001

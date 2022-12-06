@@ -6,8 +6,10 @@ import torch
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from tqdm import tqdm
 
 from model.networks.blocks.loss import hinge_loss, MA_GP
+from utils.tools import progress_bar
 
 
 class Trainer:
@@ -39,16 +41,21 @@ class Trainer:
             d_loss = 0
 
             i = 1
-            for i, data in enumerate(self.train_loader):
+            for i, data in enumerate(tqdm(self.train_loader)):
                 img, annot = data
                 bs = img.shape[0]
+                # print(img.shape, annot.shape)
 
                 # sample = np.random.choice([0, 1], bs).astype(bool)
                 # img_t = img.cuda()[sample].requires_grad_()
                 # annot = annot[sample].requires_grad_()
 
                 img_t = img.cuda().requires_grad_()
-                annot = annot.requires_grad_()
+                annot = annot.cuda().requires_grad_()
+
+                # time_used = time.time() - t
+                # print(time_used)
+                # t = time.time()
 
                 # Train discriminator
                 img_f = self.g(annot)
@@ -82,17 +89,22 @@ class Trainer:
                 # record
                 # time_used = time.time() - t
                 # print(time_used)
+                # print()
                 # t = time.time()
+                # progress_bar(i, int(num_batch), progress_name=f"Epoch {epoch} Progress", t=_t)
 
-            self.writer.add_scalar("D Loss", g_loss/num_batch, epoch)
-            self.writer.add_scalar("G Loss", d_loss/num_batch, epoch)
+            self.save(epoch)
+
+            # progress_bar(int(num_batch), int(num_batch), progress_name=f"Epoch {epoch} Progress", t=_t)
+            self.writer.add_scalar("G Loss", g_loss/num_batch, epoch)
+            self.writer.add_scalar("D Loss", d_loss/num_batch, epoch)
             self.writer.flush()
 
     def validate(self):
         pass
 
-    def save(self):
+    def save(self, epoch):
         directory = fr"runs\{self.time_code}\weights"
-        torch.save(self.g.state_ditc(), fr"{directory}\g.pt")
-        torch.save(self.d.state_ditc(), fr"{directory}\d.pt")
+        torch.save(self.g.state_dict(), fr"{directory}\g_{epoch}.pt")
+        torch.save(self.d.state_dict(), fr"{directory}\d_{epoch}.pt")
 

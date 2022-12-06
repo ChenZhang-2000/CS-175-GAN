@@ -1,6 +1,7 @@
 import time
 
 import yaml
+import torch
 
 from utils.build import *
 from utils.configuration import Configuration
@@ -19,11 +20,15 @@ def main():
     discriminator = build_discriminator(config)
     # print(time.time()-t)
 
-    trainer = Trainer(data_loader=(valid_loader, None),
+    trainer = Trainer(data_loader=(train_loader, valid_loader),
                       generator=generator,
                       discriminator=discriminator,
                       max_epoch=config.TRAIN.MAX_EPOCH,
                       bs=config.TRAIN.BS)
+    trainer.g.load_state_dict(torch.load(rf".\runs\202212011759\weights\g_9.pt", map_location='cuda:0'))
+    trainer.d.load_state_dict(torch.load(rf".\runs\202212011759\weights\d_9.pt", map_location='cuda:0'))
+    trainer.g.load_state_dict(torch.load(rf".\runs\202212020127\weights\g_33.pt", map_location='cuda:0'))
+    trainer.d.load_state_dict(torch.load(rf".\runs\202212020127\weights\d_33.pt", map_location='cuda:0'))
     trainer.train()
 
 

@@ -7,15 +7,16 @@ from model.networks.generator import Generator
 from model.networks.discriminator import Discriminator
 
 
-def build_dataloader(config):
+def build_dataloader(config, preprocessed=True):
     train = ImgTxtDataset(config.GLOBAL.TRAIN_DIR,
                           config.GLOBAL.TRAIN_TXT,
-                          split="Train")
-    # joblib.dump(train, r"E:\Datasets\COCO\preprocessed\train.pt")
+                          split="Train",
+                          preprocessed=preprocessed)
 
     valid = ImgTxtDataset(config.GLOBAL.VALID_DIR,
                           config.GLOBAL.VALID_TXT,
-                          split="Test")
+                          split="Test",
+                          preprocessed=preprocessed)
 
     print(f"Training Size: {len(train)}")
     print(f"Validate Size: {len(valid)}")
